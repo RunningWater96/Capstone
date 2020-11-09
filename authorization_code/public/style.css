@@ -2,17 +2,25 @@
     font-family: Windsong;
     src: url(Windsong.ttf);
 }
+
+img {
+    pointer-events: none;
+    user-select: none;
+}
+
 ul {
     list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
 }
+
 li {
     float: left;
     border-right: 1px solid #bbb;
 }
+
 li a {
     display: block;
     color: white;
@@ -20,15 +28,19 @@ li a {
     padding: 14px 16px;
     text-decoration: none;
 }
+
 li a:hover {
     background-color: #111;
 }
+
 .active {
     background-color: goldenrod;
 }
+
 li:last-child {
     border-right: none;
 }
+
 .name {
     display: flex;
     justify-content: center;
@@ -39,43 +51,52 @@ li:last-child {
     background-color: goldenrod;
     opacity: 0.5;
 }
+
 .info {
     text-align: center;
     margin: auto;
 }
-.info, td {
+
+.info,
+td {
     border: solid #333 5px;
     border-collapse: collapse;
     vertical-align: top;
 }
+
 td {
     padding: 90px;
 }
+
 .songButton {
-display:inline-block;
-padding:0.3em 1.2em;
-margin:0 0.3em 0.3em 0;
-border-radius:2em;
-box-sizing: border-box;
-text-decoration:none;
-font-family:'Roboto',sans-serif;
-font-weight:300;
-color:#FFFFFF;
-background-color: goldenrod;
-text-align:center;
-transition: all 0.2s;
+    display: inline-block;
+    padding: 0.3em 1.2em;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 2em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #FFFFFF;
+    background-color: goldenrod;
+    text-align: center;
+    transition: all 0.2s;
 }
+
 .songButton:hover {
     background-color: gold;
 }
+
 .container {
     display: flex;
 }
+
 #tech {
     height: 100px;
     padding-right: 50px;
     padding-left: 75px;
 }
+
 #footer {
     position: fixed;
     left: 0;
@@ -85,4 +106,27 @@ transition: all 0.2s;
     text-align: center;
     background-color: goldenrod;
     opacity: 0.5;
+}
+
+#spotLog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 100px;
+    font-family: "Windsong";
+    background-color: goldenrod;
+    opacity: 0.5;
+    padding: 50px;
+    text-align: center;
+}
+
+#logBtn {
+    background-color: #333;
+    text-align: center;
+}
+
+#logBtn:hover {
+    background-color: #111;
+    color: white;
 }
