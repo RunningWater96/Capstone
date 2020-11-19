@@ -3,10 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,user-scalable=no">
+  <meta name="viewport" content="width=device-width,user-scalable=1.0">
   <title>Songs Of A Feather</title>
   <link rel="stylesheet" href="style.css">
-  <script src="../app.js"></script>
   <ul>
     <li><a href="website.html">Home</a></li>
     <li><a href="song.html" class="active">Find A Song</a></li>
@@ -20,22 +19,54 @@
   <br>
   <table class="info">
     <tr>
-      <td rowspan="2">Recommended Movies</th>
-      <td>Similar Songs</th>
+      <td rowspan="2" id="movieReturn">
+        <div>Found Movies</div>
+        <br>
+        <div>
+          <ul id="movieReturn"></ul>
+        </div>
+      </td>
+      <td id="related_songs">
+        <div>Related Songs</div>
+        <br>
+        <div>
+          <ul id="related_songs"></ul>
+        </div>
+      </td>
+      <td rowspan="3" id="song_list">
+        <div>Found Songs</div>
+        <br>
+        <div>
+          <ul id="song_list"></ul>
+        </div>
+      </td>
     </tr>
     <tr>
-      <td>SONG INPUT:
-        <input type="text" id="song">
+      <td id="searchStuff">SONG INPUT: 
+        <input type="text" id="song_search">
         <input type="button" id="btn_submit" value="Submit" class="songButton">
       </td>
     </tr>
     <tr>
-      <td>Similar Movies</td>
-      <td>Where The Song Is From</td>
+      <td id="tvShows">
+        <div>Television Shows</div>
+        <br>
+        <div>
+          <ul id="tvShows"></ul>
+        </div>
+      </td>
+      <td id="artist_list">
+        <div>Related Artists</div>
+        <br>
+        <div>
+          <ul id="artist_list"></ul>
+        </div>
+      </td>
     </tr>
   </table>
   <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="../app.js"></script>
 </body>
 
 </html>

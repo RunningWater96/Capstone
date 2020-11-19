@@ -1,147 +1,70 @@
-/**
- * This is an example of a basic node.js script that performs
- * the Authorization Code oAuth2 flow to authenticate against
- * the Spotify Accounts.
- *
- * For more information, read
- * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
- */
+const button = document.getElementById('btn_submit');
 
-var express = require('express'); // Express web server framework
-var request = require('request'); // "Request" library
-var cors = require('cors');
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
+button.addEventListener('click', function loadDoc() {
+  const input = document.getElementById('song_search');
+  const song = document.getElementById('song_list');
+  const artists = document.getElementById('artist_list');
+  const relSongs = document.getElementById('related_songs')
 
-var client_id = '5fb2696c186d4248961dbe87b62076df'; // Your client id
-var client_secret = '5dcc82bf13844ea1afafa6aa40dbba9f'; // Your secret
-var redirect_uri = 'http://localhost:3000/website.html'; // Your redirect uri
+  var jsonObj;
+  var myHeaders = new Headers();
+  const token = 'BQBfKuwj09X3PU9xsJeXpJdPjUXcXrPMgFJID9HPDpvgFYf3CxXCcl0lE1cn7D2W2u0xJel4CzHqkJ5w8OiEqXaGbsm91v_bn5nDtx1qsdMP5CzcJh734GohzI5kJFGJZsJM02z-P6Bxk6DMY4jfWi0WPJJxel57xkNVs_J5l_wtbrE';
+  myHeaders.append("Authorization", "Bearer " + token);
 
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
-var generateRandomString = function(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-var stateKey = 'spotify_auth_state';
-
-var app = express();
-
-app.use(express.static(__dirname + '/public'))
-   .use(cors())
-   .use(cookieParser());
-
-app.get('/login', function(req, res) {
-
-  var state = generateRandomString(16);
-  res.cookie(stateKey, state);
-
-  // your application requests authorization
-  var scope = 'user-read-private user-read-email';
-  res.redirect('https://accounts.spotify.com/authorize?' +
-    querystring.stringify({
-      response_type: 'code',
-      client_id: client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state
-    }));
-});
-
-app.get('/callback', function(req, res) {
-
-  // your application requests refresh and access tokens
-  // after checking the state parameter
-
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
-
-  if (state === null || state !== storedState) {
-    res.redirect('/#' +
-      querystring.stringify({
-        error: 'state_mismatch'
-      }));
-  } else {
-    res.clearCookie(stateKey);
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        code: code,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code'
-      },
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-      },
-      json: true
-    };
-
-    request.post(authOptions, function(error, response, body) {
-      if (!error && response.statusCode === 200) {
-
-        var access_token = body.access_token,
-            refresh_token = body.refresh_token;
-
-        var options = {
-          url: 'https://api.spotify.com/v1/me',
-          headers: { 'Authorization': 'Bearer ' + access_token },
-          json: true
-        };
-
-        // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
-          console.log(body);
-        });
-
-        // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
-          querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
-          }));
-      } else {
-        res.redirect('/#' +
-          querystring.stringify({
-            error: 'invalid_token'
-          }));
-      }
-    });
-  }
-});
-
-app.get('/refresh_token', function(req, res) {
-
-  // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token
-    },
-    json: true
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
   };
-
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
-      });
-    }
-  });
+  fetch(`https://api.spotify.com/v1/search?query=${input.value}&type=track&limit=30`, requestOptions)
+    .then(responseA => responseA.json())
+    .then(resultA => {
+      console.log(resultA);
+      jsonObj = resultA;
+      for (var i = 0; i < jsonObj.tracks.limit; i++) {
+        console.log(jsonObj.tracks.items[i]);
+        fetch(`https://api.spotify.com/v1/recommendations?seed_tracks=${resultA.tracks.items[i].id}&limit=1`, requestOptions)
+          .then(responseB => responseB.json())
+          .then(resultB => {
+            console.log(resultB);
+            for (var j = 0; j < resultB.tracks.length; j++) {
+              artists.innerHTML += `<li id=artist${j}>${resultB.tracks[j].artists[0].name}</li>`;
+              relSongs.innerHTML += `<li id=song${j}>${resultB.tracks[j].name}</li>`;
+            }
+          });
+        song.innerHTML += `
+        <li id=song${i}>${resultA.tracks.items[i].name} By ${resultA.tracks.items[i].artists[0].name}</li>
+        <br>
+        `;
+      }
+    })
+    .catch(error => console.log('error', error));
 });
 
-console.log('Listening on 3000');
-app.listen(3000);
+button.addEventListener('click', function moviesReturn() {
+  const input = document.getElementById("song_search");
+  const out = document.getElementById("movieReturn");
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=71095500c5e35a3dcd1766944d756f9a&language=en-US&query=${input.value}&page=1&include_adult=false`)
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+      for (var i = 0; i < result.results.length; i++) {
+        out.innerHTML += `<li>${result.results[i].original_title}</li>`;
+      }
+    })
+    .catch(error => console.log('error', error));
+});
+
+button.addEventListener('click', function televisionReturn() {
+  const input = document.getElementById("song_search");
+  const out = document.getElementById("tvShows");
+  fetch(`https://api.themoviedb.org/3/search/tv?api_key=71095500c5e35a3dcd1766944d756f9a&language=en-US&query=${input.value}&page=1&include_adult=false`)
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+      for (var i = 0; i < result.results.length; i++) {
+        out.innerHTML += `<li>${result.results[i].name}</li>`;
+      }
+    })
+    .catch(error => console.log('error', error));
+});
