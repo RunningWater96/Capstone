@@ -6,9 +6,12 @@ button.addEventListener('click', function loadDoc() {
   var song = document.getElementById('song_list');
   var artists = document.getElementById('artist_list');
   var relSongs = document.getElementById('related_songs');
+  song.innerHTML = '<div>Found Songs</div>';
+  artists.innerHTML = '<div>Related Artists</div>';
+  relSongs.innerHTML = '<div>Related Songs</div>';
   var jsonObj;
   var myHeaders = new Headers();
-  var token = 'BQBfKuwj09X3PU9xsJeXpJdPjUXcXrPMgFJID9HPDpvgFYf3CxXCcl0lE1cn7D2W2u0xJel4CzHqkJ5w8OiEqXaGbsm91v_bn5nDtx1qsdMP5CzcJh734GohzI5kJFGJZsJM02z-P6Bxk6DMY4jfWi0WPJJxel57xkNVs_J5l_wtbrE';
+  var token = 'BQBSkRYqJZQXJoWPztiH_IBW_30Uz-1WQocscpbQwEXSReHzCQ7K-luR_zrjB7gIE4pNpySOtS2JMrVjnmQ2-oOfZHd5vgFTMobJqEOEtvei0KCWwgDx0-u-Zdh8S9QvXepZMpCjQlgiOqyF8jb6gyuYSSXG961fy6F83upQdXBqFOc';
   myHeaders.append("Authorization", "Bearer " + token);
   var requestOptions = {
     method: 'GET',
@@ -29,11 +32,11 @@ button.addEventListener('click', function loadDoc() {
         console.log(resultB);
 
         for (var j = 0; j < resultB.tracks.length; j++) {
-          artists.innerHTML += "<li id=artist".concat(j, ">").concat(resultB.tracks[j].artists[0].name, "</li>");
-          relSongs.innerHTML += "<li id=song".concat(j, ">").concat(resultB.tracks[j].name, "</li>");
+          artists.innerHTML += "<li id=artist".concat(j, "> <a href=").concat(resultB.tracks[j].artists[0].external_urls.spotify, ">").concat(resultB.tracks[j].artists[0].name, "</a></li>");
+          relSongs.innerHTML += "<li id=song".concat(j, "> <a href=").concat(resultB.tracks[j].album.external_urls.spotify, ">").concat(resultB.tracks[j].name, "</a></li>");
         }
       });
-      song.innerHTML += "\n        <li id=song".concat(i, ">").concat(resultA.tracks.items[i].name, " By ").concat(resultA.tracks.items[i].artists[0].name, "</li>\n        <br>\n        ");
+      song.innerHTML += "\n        <li id=song".concat(i, "> <a href=").concat(resultA.tracks.items[i].album.external_urls.spotify, ">").concat(resultA.tracks.items[i].name, "</a> By ").concat(resultA.tracks.items[i].artists[0].name, "</li>\n        <br>\n        ");
     }
   })["catch"](function (error) {
     return console.log('error', error);
@@ -42,13 +45,15 @@ button.addEventListener('click', function loadDoc() {
 button.addEventListener('click', function moviesReturn() {
   var input = document.getElementById("song_search");
   var out = document.getElementById("movieReturn");
+  out.innerHTML = '<div>Found Movies</div>';
   fetch("https://api.themoviedb.org/3/search/movie?api_key=71095500c5e35a3dcd1766944d756f9a&language=en-US&query=".concat(input.value, "&page=1&include_adult=false")).then(function (response) {
     return response.json();
   }).then(function (result) {
     console.log(result);
 
     for (var i = 0; i < result.results.length; i++) {
-      out.innerHTML += "<li>".concat(result.results[i].original_title, "</li>");
+      var search = result.results[i].original_title;
+      out.innerHTML += "<li><a href=".concat('https://google.com/search?q=' + search.split(' ').join('+'), " target=#>").concat(result.results[i].original_title, "</a></li>");
     }
   })["catch"](function (error) {
     return console.log('error', error);
@@ -57,13 +62,15 @@ button.addEventListener('click', function moviesReturn() {
 button.addEventListener('click', function televisionReturn() {
   var input = document.getElementById("song_search");
   var out = document.getElementById("tvShows");
+  out.innerHTML = '<div>Television Shows</div>';
   fetch("https://api.themoviedb.org/3/search/tv?api_key=71095500c5e35a3dcd1766944d756f9a&language=en-US&query=".concat(input.value, "&page=1&include_adult=false")).then(function (response) {
     return response.json();
   }).then(function (result) {
     console.log(result);
 
     for (var i = 0; i < result.results.length; i++) {
-      out.innerHTML += "<li>".concat(result.results[i].name, "</li>");
+      var search = result.results[i].name;
+      out.innerHTML += "<li><a href=".concat('https://google.com/search?q=' + search.split(' ').join('+'), " target=#>").concat(result.results[i].name, "</a></li>");
     }
   })["catch"](function (error) {
     return console.log('error', error);
