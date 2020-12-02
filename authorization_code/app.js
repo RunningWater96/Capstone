@@ -12,7 +12,7 @@ button.addEventListener('click', function loadDoc() {
 
   var jsonObj;
   var myHeaders = new Headers();
-  const token = 'BQBSkRYqJZQXJoWPztiH_IBW_30Uz-1WQocscpbQwEXSReHzCQ7K-luR_zrjB7gIE4pNpySOtS2JMrVjnmQ2-oOfZHd5vgFTMobJqEOEtvei0KCWwgDx0-u-Zdh8S9QvXepZMpCjQlgiOqyF8jb6gyuYSSXG961fy6F83upQdXBqFOc';
+  const token = 'BQA8Zt7n7I9wf9I-QBXUJ_iVm0qok0z2LFdQnflXnWklcqImK67yjuVm2IhplFJTZUnIPqszrugIuhjj15NIbLRLaIW39BxT4c8qjqe09BDNb5WCT1Mgpyi9A7MFRv7p9Qv3-BX2-pqLki9ZfvuccXD1OhzZDfcWg1sYK6J6bWggkvc';
   myHeaders.append("Authorization", "Bearer " + token);
 
   var requestOptions = {

@@ -3,6 +3,14 @@
     src: url(Windsong.ttf);
 }
 
+html {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.test {
+    color: #FFF;
+}
+
 img {
     pointer-events: none;
     user-select: none;
@@ -18,12 +26,10 @@ ul {
 
 li {
     float: left;
-    /* border-right: 1px solid #bbb; */
 }
 
 li a {
     display: block;
-    color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -61,6 +67,7 @@ li:last-child {
 td {
     border: solid #333 5px;
     vertical-align: top;
+    color: black;
 }
 
 td {
@@ -117,21 +124,13 @@ td {
     width: 100%;
     color: black;
     text-align: center;
+    font-size: 25px;
     background-color: goldenrod;
     opacity: 0.5;
-}
-
-#logBtn {
-    background-color: #333;
-    text-align: center;
-}
-
-#logBtn:hover {
-    background-color: #111;
-    color: white;
 }
 
 #song_list, #artist_list, #tvShows, #movieReturn, #related_songs {
     list-style-type: none;
     background-color: white;
 }
+
